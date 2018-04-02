@@ -1,0 +1,24 @@
+
+###############################################################################################################
+# creating heatmaps to visualize the correlation between all numeric variables of a dataset
+
+#creating heatmap of all numeric variables in loan data
+#preparing the data to create a correlation matrix
+mydata <- loan[,c(1,2,3,4,5,6,12,21,22,24,27,28,29,31,32,33,34,35,36,37,38,39,40,42)]
+
+#creating correlation matrix from D.F mydata
+cormat <- round(cor(mydata),2)
+
+# Get upper triangle of the correlation matrix
+get_upper_tri <- function(cormat){
+  cormat[lower.tri(cormat)]<- NA
+  return(cormat)
+}
+upper_tri <- get_upper_tri(cormat)
+
+# Melt the correlation matrix
+melted_cormat <- melt(upper_tri, na.rm = TRUE)
+
+# Heatmap
+ggplot(data = melted_cormat,aes(Var2,Var1,fill=value))+xlab("")+ylab("")+geom_tile(color="white")+scale_fill_gradient2(low ="blue",high="red",mid="white",midpoint=0,limit=c(-1,1),space ="Lab",name="Pearson\nCorrelation")+theme_minimal()+theme(axis.text.x=element_text(angle=45,vjust=1,size=12,hjust=1))+coord_fixed()
+###################################################################################################################################
